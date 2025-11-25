@@ -1,0 +1,35 @@
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/tsconfig.tsbuildinfo
+
+# GitHub Pages
+.github/workflows/.deploy/
+
+# Backend
+backend/node_modules/
+backend/cache/
+backend/artifacts/
+backend/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+
+# Misc
+*.local
+.env
+.env.*
+
