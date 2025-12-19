@@ -15,32 +15,28 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            // Keep React and React-DOM together - this is critical
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react/jsx-runtime')) {
-              return 'react-vendor';
-            }
-            if (id.includes('wagmi') || id.includes('viem')) {
-              return 'wagmi-vendor';
-            }
-            if (id.includes('@tanstack/react-query')) {
-              return 'query-vendor';
-            }
-            if (id.includes('ethers')) {
-              return 'ethers-vendor';
-            }
-            return 'vendor';
-          }
-        },
-        // Ensure proper chunk loading order
-        chunkFileNames: (chunkInfo) => {
-          // React vendor should be loaded first
-          if (chunkInfo.name === 'react-vendor') {
-            return 'assets/react-vendor-[hash].js';
-          }
-          return 'assets/[name]-[hash].js';
-        }
+        // Disable code splitting to ensure React loads before any code that uses it
+        // This prevents the "Cannot read properties of undefined (reading 'useState')" error
+        manualChunks: undefined,
+        // Alternative: Keep React in main bundle, split other vendors
+        // manualChunks: (id) => {
+        //   // Don't split React - keep it in main bundle
+        //   if (id.includes('node_modules')) {
+        //     if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler') || id.includes('react/jsx-runtime')) {
+        //       return undefined; // Keep in main bundle
+        //     }
+        //     if (id.includes('wagmi') || id.includes('viem')) {
+        //       return 'wagmi-vendor';
+        //     }
+        //     if (id.includes('@tanstack/react-query')) {
+        //       return 'query-vendor';
+        //     }
+        //     if (id.includes('ethers')) {
+        //       return 'ethers-vendor';
+        //     }
+        //     return 'vendor';
+        //   }
+        // }
       }
     },
     // Ensure proper module resolution
@@ -48,7 +44,6 @@ export default defineConfig({
       include: [/node_modules/],
       transformMixedEsModules: true
     },
-    // Increase minification to catch potential issues
     minify: 'esbuild',
     target: 'esnext'
   },
